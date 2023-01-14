@@ -8,11 +8,6 @@ import {nanoid} from "nanoid"
 
 export default function App() {
 
-        /**
-     * Challenge: When the user edits a note, reposition
-     * it in the list of notes to the top of the list
-     */
-
     const [notes, setNotes] = React.useState(() => JSON.parse(localStorage.getItem("notes")) || [])
     const [currentNoteId, setCurrentNoteId] = React.useState(
         (notes[0] && notes[0].id) || ""
@@ -48,6 +43,12 @@ export default function App() {
         })
     }
     
+    
+    function deleteNote(event, noteId) {
+        event.stopPropagation()
+        setNotes(oldNotes => oldNotes.filter((note) => note.id !== noteId))
+    }
+
     function findCurrentNote() {
         return notes.find(note => {
             return note.id === currentNoteId
@@ -71,6 +72,7 @@ export default function App() {
                     currentNote={findCurrentNote()}
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
+                    deleteNote={deleteNote}
                 />
                 {
                     currentNoteId && 
